@@ -1,12 +1,13 @@
-#include "eigercodetask/fileio.h"
-#include "eigercodetask/sync.h"
-#include "eigercodetask/adler32.h"
-#include "eigercodetask/myfactory.h"
+#include "fileio.h"
+#include "sync.h"
+#include "adler32.h"
+#include "mybaseclass.h"
 #include <cstdint>
 #include <stdio.h>
 #include <math.h>
+#include <memory>
 
-shared_ptr<MyBaseClass> MyFactory::CreateInstance(std::string name)
+std::shared_ptr<MyBaseClass> MyFactory::CreateInstance(std::string name)
 {
     Adler32Class * Adler32ClassInstance = nullptr;
     FileIOClass * FileIOClassInstance = nullptr;

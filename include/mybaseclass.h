@@ -1,10 +1,10 @@
 #ifndef MYBASECLASS_H
 #define MYBASECLASS_H
 
-#include "eigercodetask/fileio.h"
-#include "eigercodetask/sync.h"
-#include "eigercodetask/adler32.h"
-#include "eigercodetask/myfactory.h"
+#include "fileio.h"
+#include "sync.h"
+#include "adler32.h"
+#include "myfactory.h"
 #include <cstdint>
 #include <iostream>
 #include <stdio.h>
@@ -12,6 +12,7 @@
 #include <math.h>
 #include <vector>
 #include <tuple>
+#include <memory>
 
 
 struct sync {

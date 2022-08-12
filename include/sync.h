@@ -23,18 +23,17 @@ struct Bytes {
 
 struct Indexes { map<uint32_t, map<string, int> > index;};
 
-
 class SyncClass {
     public:
         SyncClass(){};
         virtual ~SyncClass(){};
-        vector<Table> BuildSigTable(std::ifstream& infile);
-        Indexes BuildIndexes(vector<Table> signatures);
-        int Seek(Indexes idx, uint32_t wk, char b[1024]);
+        static vector<Table> BuildSigTable(std::ifstream& infile);
+        static Indexes BuildIndexes(vector<Table> signatures);
+        static int Seek(Indexes idx, uint32_t wk, char b[1024]);
         Bytes block(int index, char literalMatches[256]);
         typedef map<int, Bytes> Delta;
-        SyncClass::Delta IntegrityCheck(vector<Table> sig, SyncClass::Delta matches);
-        SyncClass::Delta DeltaFunc(vector<Table> sig, std::ifstream& reader);
+        static SyncClass::Delta IntegrityCheck(vector<Table> sig, SyncClass::Delta matches);
+        static SyncClass::Delta DeltaFunc(vector<Table> sig, std::ifstream& reader);
         void Add(int index, Bytes b);
         static string Strong(char* block){};
         Table table;

@@ -1,7 +1,7 @@
-#include "eigercodetask/sync.h"
-#include "eigercodetask/myfactory.h"
-#include "eigercodetask/mybaseclass.h"
-#include "eigercodetask/fileio.h"
+#include "sync.h"
+#include "myfactory.h"
+#include "mybaseclass.h"
+#include "fileio.h"
 #include <tuple>
 #include <cstdint>
 
@@ -33,4 +33,6 @@ int main()
 
     auto sig = sync->BuildSigTable(std::get<0>(v1));
     sync->DeltaFunc(sig, std::get<0>(v2));
+
+    return 0;
 }

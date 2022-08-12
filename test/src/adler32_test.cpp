@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
-#include "eigercodetask/adler32.h"
-#include "eigercodetask/mybaseclass.h"
+#include "mybaseclass.h"
 
 TEST(Adler32Test, TestWriteSum) {
     auto Adler32 = MyFactory::CreateInstance("adler");

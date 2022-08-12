@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
-#include "eigercodetask/sync.h"
-#include "eigercodetask/mybaseclass.h"
+#include "mybaseclass.h"
+#include "sync.h"
+#include "fileio.h"
 #include <istream>
 #include <fstream>
 
@@ -78,7 +79,7 @@ TEST(SyncTest, TestDetectChunkChange) {
 TEST(SyncTest, TestSeekMatchBlock) {
     char a[] = "hellow world this is a test for my seek block";
     std::ifstream ifsA (a, std::ifstream::binary);
-    auto bytesA = &ifsA.read(a, sizeof(a)); //TODO FIX BUFIO
+    auto bytesA = &ifsA.read(a, sizeof(a));
 
     auto sync = MyFactory::CreateInstance("sync");
     sync->Sync.blockSize = 1 << 3;
@@ -86,6 +87,8 @@ TEST(SyncTest, TestSeekMatchBlock) {
     // For each block slice from file
     auto weakSuM = uint32_t(231277338);
     auto sig = sync->BuildSigTable(ifsA);
+
+    SyncClass::BuildSigTable(ifsA);
 
     auto indexes = sync->BuildIndexes(sig);
     auto index = sync->Seek(indexes, weakSuM, "rld this");

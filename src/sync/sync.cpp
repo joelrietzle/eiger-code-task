@@ -1,6 +1,6 @@
-#include "eigercodetask/mybaseclass.h"
-#include "eigercodetask/sha1.h"
-#include "eigercodetask/sync.h"
+#include "mybaseclass.h"
+#include "sha1.h"
+#include "sync.h"
 #include <iostream>
 #include <fstream>
 #include <map>

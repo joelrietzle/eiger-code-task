@@ -1,7 +1,6 @@
 #ifndef MYFACTORY_H
 #define MYFACTORY_H
 
-#include "eigercodetask/mybaseclass.h"
 #include <memory>
 #include <string>
 

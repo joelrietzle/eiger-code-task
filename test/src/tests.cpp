@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
-#include "eigercodetask/fileio.h"
-#include "eigercodetask/sync.h"
+#include "fileio.h"
+#include "sync.h"
+#include "adler32.h"
+#include "signature.h"
 
 int main(int argc, char **argv)
 {

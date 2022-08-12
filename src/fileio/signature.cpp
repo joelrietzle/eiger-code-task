@@ -1,11 +1,11 @@
 #include <string>
 #include <cstdint>
 #include <fstream>
-#include "eigercodetask/spencoding.h"
-#include "eigercodetask/mybaseclass.h"
-#include "eigercodetask/myfactory.h"
-#include "eigercodetask/sync.h"
-#include "eigercodetask/signature.h"
+#include "spencoding.h"
+#include "mybaseclass.h"
+#include "myfactory.h"
+#include "sync.h"
+#include "signature.h"
 #include <tuple>
 
 using namespace std;
@@ -40,7 +40,7 @@ std::tuple<std::string, int> SignatureClass::WriteSignature(std::string file, st
         string enc = encoder.encode(signatures);
 
 
-        std::tuple<string, int> tuple("", 0);
+        std::tuple<string, int> tuple(enc, 0);
         return tuple;
     
 }

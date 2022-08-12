@@ -3,14 +3,15 @@
 
 #include <fstream>
 #include <tuple>
+#include "mybaseclass.h"
 
 class FileIOClass
 {
     public:
         FileIOClass(){};
         virtual ~FileIOClass(){};
-        std::tuple<std::ifstream&, std::string, int> Open(std::string input);
-        int Chunks(uint64_t fileSize);
+        static std::tuple<std::ifstream&, std::string, int> Open(std::string input);
+        static int Chunks(uint64_t fileSize);
 };
 
 #endif

@@ -1,6 +1,6 @@
-#include "eigercodetask/mybaseclass.h"
-#include "eigercodetask/myfactory.h"
-#include "eigercodetask/adler32.h"
+#include "mybaseclass.h"
+#include "myfactory.h"
+#include "adler32.h"
 #include <cstdint>
 #include <cstring>
 #include <stdio.h>
@@ -8,6 +8,7 @@
 #include <memory>
 #include <valarray>
 
+const int M = 65521;
 
 // Calculate initial checksum from byte slice
 adler32 Write(std::byte data) {
