@@ -1,7 +1,8 @@
 #ifndef FILEIO_H
 #define FILEIO_H
 
-#include <fstream>
+#include <istream>
+
 #include <tuple>
 
 
@@ -14,8 +15,8 @@ class FileIOClass
     public:
         FileIOClass(){};
         virtual ~FileIOClass(){};
-        static std::tuple<std::ifstream&, std::string, int> Open(std::string input);
-        static int Chunks(uint64_t fileSize);
+        static std::tuple<std::ifstream&, std::string, int> Open(std::string input, uint64_t blockSize);
+        static int Chunks(uint64_t fileSize, uint64_t blockSize);
         IO io;
 };
 

@@ -1,5 +1,4 @@
 #include "mybaseclass.h"
-#include "myfactory.h"
 #include "adler32.h"
 #include <cstdint>
 #include <cstring>
@@ -11,7 +10,7 @@
 const int M = 65521;
 
 // Calculate initial checksum from byte slice
-adler32 Write(std::byte data) {
+adler32 Adler32Class::Write(char* data) {
 
     auto Adler32 = MyFactory::CreateAdlerInstance("adler");
     for (int index = 0, character = 0; index < sizeof(data) &&  character < sizeof(data); index++, character++)
@@ -21,53 +20,52 @@ adler32 Write(std::byte data) {
         Adler32->Adler32.b += uint16_t(sizeof(data) - index) * uint16_t(character);
         Adler32->Adler32.count++;
     }
-
     Adler32->Adler32.a %= M;
     Adler32->Adler32.b%= M;
     return Adler32->Adler32;
 }
 
 // Calculate and return checksum
-uint32_t Sum() {
-    auto Adler32 = MyFactory::CreateAdlerInstance("adler");
+uint32_t Adler32Class::Sum(adler32 Adler32) {
+    //auto Adler32 = MyFactory::CreateAdlerInstance("adler");
     // Enforece 16 bits
     // a = 920 = 0x398 (written in base 16)
     // b = 4582 = 0x11E6
     // Output = 0x11E6 << 16 + 0x398 = 0x11E60398
-    return uint32_t(Adler32->Adler32.b) << 16 | uint32_t(Adler32->Adler32.a)&0xFFFFF;
+    return uint32_t(Adler32.b) << 16 | uint32_t(Adler32.a)&0xFFFFF;
 }
 
-uint8_t* Window() {auto Adler32 = MyFactory::CreateAdlerInstance("adler"); return Adler32->Adler32.window;}
-int Count() {auto Adler32 = MyFactory::CreateAdlerInstance("adler"); return Adler32->Adler32.count;}
-uint8_t Removed() {auto Adler32 = MyFactory::CreateAdlerInstance("adler"); return Adler32->Adler32.old;}
+char* Adler32Class::Window() {auto Adler32 = MyFactory::CreateAdlerInstance("adler"); return Adler32->Adler32.window;}
+int Adler32Class::Count() {auto Adler32 = MyFactory::CreateAdlerInstance("adler"); return Adler32->Adler32.count;}
+uint8_t Adler32Class::Removed() {auto Adler32 = MyFactory::CreateAdlerInstance("adler"); return Adler32->Adler32.old;}
 
 // Add byte to rolling checksum
-adler32 AdlerClass::Rollin(char* input)
+adler32 Adler32Class::Rollin(char* input)
 {
     auto Adler32 = MyFactory::CreateAdlerInstance("adler");
     Adler32->Adler32.a = (Adler32->Adler32.a + uint16_t(*input)) % M;
     Adler32->Adler32.b = (Adler32->Adler32.b + Adler32->Adler32.a) %M;
 
     // Keep stored windows bytes while getting processed
-    memcpy(Adler32->Adler32.window, input, sizeof(input));
+    memcpy(Adler32->Adler32.window, input, sizeof(&input));
     Adler32->Adler32.count++;
     return Adler32->Adler32;
 }
 
 // Substract byte from checksum
-adler32 RollOut()
+adler32 Adler32Class::Rollout()
 {
     auto Adler32 = MyFactory::CreateAdlerInstance("adler");
     // Checking if window is empty. Then nothing to roll out.
-    if (sizeof(Adler32->Adler32.window == 0))
+    if ((sizeof(Adler32->Adler32.window) == 0))
     {
         Adler32->Adler32.count = 0;
         return Adler32->Adler32;
     }
 
-    Adler32->Adler32.old = Adler32->Adler32.window[0];
+    Adler32->Adler32.old = (uint16_t)Adler32->Adler32.window[0];
     Adler32->Adler32.a = (Adler32->Adler32.a - uint16_t(Adler32->Adler32.a)) %M;
-    Adler32->Adler32.b = (Adler32->Adler32.b - (uint16_t(sizeof(Adler32->Adler32.window)) * uint16_t(Adler32->Adler32.old))) %M;
+    Adler32->Adler32.b = (Adler32->Adler32.b - (uint16_t(sizeof(&Adler32->Adler32.window)) * uint16_t(Adler32->Adler32.old))) %M;
     memcpy(Adler32->Adler32.window, Adler32->Adler32.window,  sizeof(Adler32));
     
 }

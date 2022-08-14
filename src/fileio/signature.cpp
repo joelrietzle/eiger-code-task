@@ -1,9 +1,8 @@
 #include <string>
 #include <cstdint>
-#include <fstream>
+#include <istream>
 #include "spencoding.h"
 #include "mybaseclass.h"
-#include "myfactory.h"
 #include "sync.h"
 #include "signature.h"
 #include <tuple>
@@ -12,18 +11,19 @@ using namespace std;
 using namespace sp;
 
 
-std::tuple<std::string, int> SignatureClass::WriteSignature(std::string file, std::string signatures[1024]) {
+std::tuple<std::string, int> SignatureClass::WriteSignature(std::string file, std::string signatures[]) {
 
     std::string error;
-    if (sizeof(signatures == 0)) {
-        printf("No signatures to write");
+    
+    if ((signatures->length() == 0)) {
         error = "No signatures to write";
         std::tuple<string, int> tuple(error, 1);
         return tuple;
     }
 
-        //Create file 
-        ofstream f(file);
+        //Open file
+        ofstream f;
+        f.open(file, std::ifstream::in);
 
         if (!f)
         {
@@ -32,22 +32,23 @@ std::tuple<std::string, int> SignatureClass::WriteSignature(std::string file, st
             return tuple;
         }
 
-        // Close file
-        f.close();
-
         // Encode
         Base64Encoding encoder;
         string enc = encoder.encode(signatures);
 
+        //Write to file
+        f << enc;
 
+         // Close file
+        f.close();
         std::tuple<string, int> tuple(enc, 0);
         return tuple;
     
 }
 
-std::tuple<Table, std::string, int> SignatureClass::ReadSignature(string file) {
+std::tuple<Table, std::string, std::string, int> SignatureClass::ReadSignature(string file) {
     ifstream f;
-    f.open(file);
+    f.open(file, std::ifstream::in);
     string error;
     Table table;
 
@@ -55,29 +56,33 @@ std::tuple<Table, std::string, int> SignatureClass::ReadSignature(string file) {
     {
         cout << "error opening file" << endl;
         error = "error opening file";
-        std::tuple<Table, std::string, int> tuple(table, error, 1);
+        std::tuple<Table, std::string, std::string, int> tuple(table, error, error, 1);
         return tuple;
     }
 
     f.close();
-    string signatures;
-    string read[2] = {signatures};
+    string signatures[2];
     
-
     // Decode
     Base64Encoding decoder;
-    string dec = decoder.decode(signatures);
+    string dec0 = decoder.decode(signatures[0]);
+    string dec1 = decoder.decode(signatures[1]);
 
-    if (dec == "0")
+    if (dec0 == "0")
     {
         error = "decoding failed";
-        std::tuple<Table, std::string, int> tuple(table, error, 1);
+        std::tuple<Table, std::string, std::string, int> tuple(table, error, error,  1);
         return tuple;
     }
 
-    std::tuple<Table, std::string, int> tuple(table, dec, 1);
+    if (dec1 == "0")
+    {
+        error = "decoding failed";
+        std::tuple<Table, std::string, std::string, int> tuple(table, error, error,  1);
+        return tuple;
+    }
+    std::tuple<Table, std::string, std::string, int> tuple(table, dec0, dec1, 1);
     return tuple;
-
 }
 
 

@@ -12,27 +12,24 @@ TEST(SignatureTest, TestSignatureReadWrite) {
     std::tie(table.Weak, table.Strong) = std::make_tuple(uint32_t(0000), std::string("abc123"));
     std::string signatures[2];
     
-    signatures[0] = table.Weak;
-    signatures[1] = table.Strong;
+    signatures[0] = std::string("abc123");
+    signatures[1] = uint32_t(0000);
 
     SignatureClass::WriteSignature("signature.bin", signatures);
     auto out = SignatureClass::ReadSignature("signature.bin");
 
     ASSERT_EQ(signatures[0], std::get<1>(out));
     ASSERT_TRUE(true) << "Expected written signatures equal to out signatures[0]";
-    ASSERT_EQ(signatures[1], std::get<1>(out));
+    ASSERT_EQ(signatures[1], std::get<2>(out));
     ASSERT_TRUE(true) << "Expected written signatures equal to out signatures[1]";
 }
 
 TEST(SignatureTest, TestSignatureBadWrite) {
     Table table;
     std::string signatures[2];
-
-    signatures[0] = table.Weak;
-    signatures[1] = table.Strong;
     
     auto error = SignatureClass::WriteSignature("signature.bin", signatures);
-
+    std::cout << signatures;
     ASSERT_EQ(std::get<1>(error), 1);
     ASSERT_TRUE(true) << "Expected error with empty signatures to write";
 
@@ -54,7 +51,7 @@ TEST(SignatureTest, TestSignatureBadFileWrite) {
 TEST(SignatureTest, TestSignatureBadFileRead) {
     auto error = SignatureClass::ReadSignature("notexists.bin");
 
-    ASSERT_EQ(std::get<2>(error), 1);
+    ASSERT_EQ(std::get<3>(error), 1);
     ASSERT_TRUE(true) << "Expected error with invalid file to read"; 
 }
 
@@ -66,6 +63,6 @@ TEST(SignatureTest, TestSignatureBadDataRead) {
     f.write("I am an invalid file", 22);
     auto error = SignatureClass::ReadSignature(file);
     
-    ASSERT_EQ(std::get<2>(error), 1);
+    ASSERT_EQ(std::get<3>(error), 1);
     ASSERT_TRUE(true) << "Expected error with invalid file content";
 }

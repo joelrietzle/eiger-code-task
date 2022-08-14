@@ -1,6 +1,7 @@
 #ifndef SYNC_H
 #define SYNC_H
 #include <iostream>
+#include <istream>
 #include <fstream>
 #include <map>
 #include <vector>
@@ -39,7 +40,6 @@ class SyncClass {
         typedef map<int, Bytes> Delta;
         static Delta IntegrityCheck(vector<Table> sig, SyncClass::Delta matches);
         static Delta DeltaFunc(vector<Table> sig, std::ifstream& reader);
-        void Add(int index, Bytes b);
         static string Strong(char* block){};
         Table table;
         Sync sync;

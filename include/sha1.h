@@ -24,6 +24,7 @@
 
 
 #include <cstdint>
+#include <istream>
 #include <fstream>
 #include <iomanip>
 #include <iostream>

@@ -2,7 +2,7 @@
 #include "sha1.h"
 #include "sync.h"
 #include <iostream>
-#include <fstream>
+#include <istream>
 #include <map>
 #include <string>
 #include <vector>
@@ -23,8 +23,9 @@ std::string Strong(char* block) {
 // Calc and return weak adler32 checksum
 uint32_t weak(char* block) {
     auto weak = MyFactory::CreateAdlerInstance("adler");
-    auto write = weak->Write(block).Sum();
-    
+    auto write = Adler32Class::Write(block);
+    auto sum = Adler32Class::Sum(write);
+    return sum;
 }
 
 // Return new calculated range position in block diffs
@@ -33,7 +34,7 @@ Bytes SyncClass::block(int index, char literalMatches[256]) {
     Bytes bytes;
     bytes.Start = index * s->sync.blockSize;
     bytes.Offset = (index * s->sync.blockSize) + s->sync.blockSize;
-    memcpy(bytes.Lit, literalMatches, sizeof(literalMatches));
+    memcpy(bytes.Lit, literalMatches, sizeof(&literalMatches));
     return {bytes};
 }
 
@@ -41,8 +42,6 @@ Bytes SyncClass::block(int index, char literalMatches[256]) {
 // Weak + Strong hash table
 
 vector<Table> SyncClass::BuildSigTable(std::ifstream& infile) {
-
-
     Table table;
     auto s = MyFactory::CreateSyncInstance("sync");
     char * block = {}; 
@@ -72,9 +71,7 @@ vector<Table> SyncClass::BuildSigTable(std::ifstream& infile) {
             cout << "error: only" << infile.gcount() << "could be read";
             infile.close();
         }
-
     }
-
     return signatures;
 }
 
@@ -96,9 +93,7 @@ Indexes SyncClass::BuildIndexes(vector<Table> signatures) {
             auto strongValue = strongMap.emplace(std::make_pair(key, value));
             
         }
-
     }
-
     return indexes;
 }
 
@@ -122,6 +117,7 @@ int SyncClass::Seek(Indexes idx, uint32_t wk, char b[1024]) {
     
     auto s = MyFactory::CreateSyncInstance("sync");
     auto found = idx.index.contains(wk);
+
     if (found) {
         auto st = SyncClass::Strong(b); // Calculate strong hash until weak found
         strongCalc = true;
@@ -173,7 +169,8 @@ SyncClass::Delta SyncClass::DeltaFunc(std::vector<Table> sig, std::ifstream& rea
         }
 
         // Add new character to checksum;
-        weak->Adler32.Rollin(&byte);
+        Adler32Class::Rollin(&byte);
+
         // We keep moving forward if data is not ready
         if (weak->Adler32.Count() < s->sync.blockSize) {
             continue;
@@ -181,17 +178,17 @@ SyncClass::Delta SyncClass::DeltaFunc(std::vector<Table> sig, std::ifstream& rea
 
         // Start moving window over data
         // If written bytes overflow current size and no match found
-        if (weak->Adler32.Count() > s->sync.blockSize) {
+        if (Adler32Class::Count() > s->sync.blockSize) {
             // Subtract initial byte to shift << the bytes left
-            weak->Adler32.Rollout();
-            auto removed = weak->Adler32.Removed();
+            Adler32Class::Rollout();
+            auto removed = Adler32Class::Removed();
             // Store literal matches
-            memcpy(tmpLitMatches, removed, sizeof(removed));
+            memcpy(tmpLitMatches, &removed, sizeof(&removed));
         }
 
         // Calculate checksum based on rolling hash
         // Check if the weak and strong match in checksum's position based signatures
-        int index = s->Seek(indexes, weak->Adler32.Sum(), weak->Adler32.Window());
+        int index = s->Seek(indexes, Adler32Class::Sum(weak->Adler32), Adler32Class::Window());
         std::map<std::string, int>::iterator it;
         if (index != 0) {
                 // Generate new block with calculated range positions for diffing 
@@ -199,12 +196,7 @@ SyncClass::Delta SyncClass::DeltaFunc(std::vector<Table> sig, std::ifstream& rea
                 
                 delta.emplace(index, newBlock);
         }
-
-
-        
     }
-
     delta = s->IntegrityCheck(sig, delta);
     return delta;
-
 }
