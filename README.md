@@ -42,12 +42,11 @@ By default, the template uses [Google Test](https://github.com/google/googletest
 for unit testing. Unit testing can be disabled in the options, by setting the
 `ENABLE_UNIT_TESTING` (from
 [cmake/StandardSettings.cmake](cmake/StandardSettings.cmake)) to be false. To run
-the tests, simply use CTest, from the build directory, passing the desire
-configuration for which to run tests for. An example of this procedure is:
+the tests, simply run this g++ command from the root to create a main_test output file. An example can look like this:
 
 ```bash
-cd build          # if not in the build directory already
-ctest -C Release  # or `ctest -C Debug` or any other configuration you wish to test
+g++ -std=c++20 -o main_test -I/Users/joelrietz/eiger-code-task/include/ src/adler32/adler32.cpp src/fileio/fileio.cpp src/fileio/signature.cpp src/sync/sync.cpp src/mybaseclass.cpp test/src/adler32_test.cpp test/src/fileio_test.cpp test/src/tests.cpp test/src/signature_test.cpp test/src/sync_test.cpp -lgtest # to build the Google test output file main_test.
+./main_test # to run the Google test file
 
 # you can also run tests with the `-VV` flag for a more verbose output (i.e.
 #GoogleTest output as well)
