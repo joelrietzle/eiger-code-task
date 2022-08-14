@@ -1,7 +1,7 @@
-#include "eigercodetask/sync.h"
-#include "eigercodetask/myfactory.h"
-#include "eigercodetask/mybaseclass.h"
-#include "eigercodetask/fileio.h"
+#include "sync.h"
+#include "myfactory.h"
+#include "mybaseclass.h"
+#include "fileio.h"
 #include <tuple>
 #include <cstdint>
 
@@ -10,9 +10,9 @@ int main()
 {
     uint8_t blockSize = 1 << 4;
 
-    auto io = MyFactory::CreateInstance("fileio");
-    auto sync = MyFactory::CreateInstance("sync");
-    auto adler = MyFactory::CreateInstance("adler");
+    auto io = MyFactory::CreateFileIOInstance("fileio");
+    auto sync = MyFactory::CreateSyncInstance("sync");
+    auto adler = MyFactory::CreateAdlerInstance("adler");
     SyncClass::Delta delta;
 
     auto v1 = io->Open("test1.txt");
@@ -33,4 +33,6 @@ int main()
 
     auto sig = sync->BuildSigTable(std::get<0>(v1));
     sync->DeltaFunc(sig, std::get<0>(v2));
+
+    return 0;
 }

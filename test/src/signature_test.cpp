@@ -1,33 +1,33 @@
 #include <gtest/gtest.h>
-#include "eigercodetask/sync.h"
-#include "eigercodetask/mybaseclass.h"
-#include "eigercodetask/signature.h"
+#include "sync.h"
+#include "mybaseclass.h"
+#include "signature.h"
 #include <istream>
 #include <fstream>
 #include <string>
 #include <tuple>
 
 TEST(SignatureTest, TestSignatureReadWrite) {
-    auto sync = MyFactory::CreateInstance("sync");
     Table table;
     std::tie(table.Weak, table.Strong) = std::make_tuple(uint32_t(0000), std::string("abc123"));
-    sync->table = table;
     std::string signatures[2];
+    
     signatures[0] = table.Weak;
     signatures[1] = table.Strong;
+
     SignatureClass::WriteSignature("signature.bin", signatures);
-
     auto out = SignatureClass::ReadSignature("signature.bin");
-    ASSERT_EQ(signatures[0], std::get<1>(out));
-    ASSERT_EQ(signatures[1], std::get<1>(out));
-    ASSERT_TRUE(true) << "Expected written signatures equal to out signatures";
 
+    ASSERT_EQ(signatures[0], std::get<1>(out));
+    ASSERT_TRUE(true) << "Expected written signatures equal to out signatures[0]";
+    ASSERT_EQ(signatures[1], std::get<1>(out));
+    ASSERT_TRUE(true) << "Expected written signatures equal to out signatures[1]";
 }
 
 TEST(SignatureTest, TestSignatureBadWrite) {
-    auto sync = MyFactory::CreateInstance("sync");
     Table table;
     std::string signatures[2];
+
     signatures[0] = table.Weak;
     signatures[1] = table.Strong;
     
@@ -39,7 +39,6 @@ TEST(SignatureTest, TestSignatureBadWrite) {
 }
 
 TEST(SignatureTest, TestSignatureBadFileWrite) {
-    auto sync = MyFactory::CreateInstance("sync");
     Table table;
     std::string signatures[2];
     signatures[0] = table.Weak;

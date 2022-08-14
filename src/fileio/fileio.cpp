@@ -1,10 +1,10 @@
-#include "eigercodetask/fileio.h"
+#include "fileio.h"
+#include "mybaseclass.h"
 #include <tuple>
 #include <fstream>
 #include <istream>
 #include <string.h>
 #include <math.h>
-#include "eigercodetask/mybaseclass.h"
 
 using namespace std;
 
@@ -17,7 +17,7 @@ std::tuple<std::ifstream&, std::string, int> FileIOClass::Open(std::string input
     
 
 
-    ifs.open(input);
+    ifs.open(input, std::ifstream::in);
 
     if (ifs.fail())
     {
@@ -51,7 +51,7 @@ std::tuple<std::ifstream&, std::string, int> FileIOClass::Open(std::string input
 }
 
 int FileIOClass::Chunks(uint64_t fileSize) {
-    auto io = MyFactory::CreateInstance("fileio");
+    auto io = MyFactory::CreateFileIOInstance("fileio");
     return{int(ceil(float(fileSize) / float(io->io.blockSize)))};
 }
 

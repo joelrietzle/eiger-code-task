@@ -14,25 +14,23 @@ set(exe_sources
     src/sync/sync.cpp
     src/fileio/signature.cpp
     src/mybaseclass.cpp
-    Executable
 
 		${sources}
 )
 
 set(headers
-    include/eigercodetask/main.h
-    include/eigercodetask/mybaseclass.h
-    include/eigercodetask/myfactory.h
-    include/eigercodetask/spencoding.h
-    include/eigercodetask/sync.h
-    include/eigercodetask/fileio.h
-    include/eigercodetask/adler32.h
-    include/eigercodetask/sha1.h
-    include/eigercodetask/signature.h
+    include/mybaseclass.h
+    include/myfactory.h
+    include/spencoding.h
+    include/sync.h
+    include/fileio.h
+    include/adler32.h
+    include/sha1.h
+    include/signature.h
 )
 
 set(test_sources
-  src/main_test.cpp
+  src/tests.cpp
   src/fileio_test.cpp
   src/signature_test.cpp
   src/sync_test.cpp
