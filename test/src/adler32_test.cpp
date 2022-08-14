@@ -2,7 +2,7 @@
 #include "mybaseclass.h"
 
 TEST(Adler32Test, TestWriteSum) {
-    auto Adler32 = MyFactory::CreateInstance("adler");
+    auto Adler32 = MyFactory::CreateAdlerInstance("adler");
     auto rolling = Adler32->Write("how are you doing");
 
     auto w0 = rolling.Sum();
@@ -18,7 +18,7 @@ TEST(Adler32Test, TestWriteSum) {
 }
 
 TEST(Adler32Test, TestWindowOverFlow) {
-    auto Adler32 = MyFactory::CreateInstance("adler");
+    auto Adler32 = MyFactory::CreateAdlerInstance("adler");
     auto rolling = Adler32->Write("abcdef").Rollout().Rollout().Rollout().Rollout().Rollout().Rollout().Rollout();
 
     auto count = rolling.Count();
@@ -28,7 +28,7 @@ TEST(Adler32Test, TestWindowOverFlow) {
 }
 
 TEST(Adler32Test, TestRollIn) {
-    auto rolling = MyFactory::CreateInstance("adler");
+    auto rolling = MyFactory::CreateAdlerInstance("adler");
     auto w0 = rolling->Write("ow are you doing").Sum();
     auto w1 = rolling->Rollin("o").
     Rollin("w").
@@ -55,7 +55,7 @@ TEST(Adler32Test, TestRollIn) {
 }
 
 TEST(Adler32Test, TestRollOut) {
-    auto rolling = MyFactory::CreateInstance("adler");
+    auto rolling = MyFactory::CreateAdlerInstance("adler");
     auto w0 = rolling->Write("w are you doing").Sum();
     auto w1 = rolling->Rollin("h").
     Rollin("o").

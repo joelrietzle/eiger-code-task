@@ -51,7 +51,7 @@ std::tuple<std::ifstream&, std::string, int> FileIOClass::Open(std::string input
 }
 
 int FileIOClass::Chunks(uint64_t fileSize) {
-    auto io = MyFactory::CreateInstance("fileio");
+    auto io = MyFactory::CreateFileIOInstance("fileio");
     return{int(ceil(float(fileSize) / float(io->io.blockSize)))};
 }
 

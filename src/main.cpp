@@ -10,9 +10,9 @@ int main()
 {
     uint8_t blockSize = 1 << 4;
 
-    auto io = MyFactory::CreateInstance("fileio");
-    auto sync = MyFactory::CreateInstance("sync");
-    auto adler = MyFactory::CreateInstance("adler");
+    auto io = MyFactory::CreateFileIOInstance("fileio");
+    auto sync = MyFactory::CreateSyncInstance("sync");
+    auto adler = MyFactory::CreateAdlerInstance("adler");
     SyncClass::Delta delta;
 
     auto v1 = io->Open("test1.txt");

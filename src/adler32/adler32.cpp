@@ -13,7 +13,7 @@ const int M = 65521;
 // Calculate initial checksum from byte slice
 adler32 Write(std::byte data) {
 
-    auto Adler32 = MyFactory::CreateInstance("adler");
+    auto Adler32 = MyFactory::CreateAdlerInstance("adler");
     for (int index = 0, character = 0; index < sizeof(data) &&  character < sizeof(data); index++, character++)
     {
 
@@ -29,7 +29,7 @@ adler32 Write(std::byte data) {
 
 // Calculate and return checksum
 uint32_t Sum() {
-    auto Adler32 = MyFactory::CreateInstance("adler");
+    auto Adler32 = MyFactory::CreateAdlerInstance("adler");
     // Enforece 16 bits
     // a = 920 = 0x398 (written in base 16)
     // b = 4582 = 0x11E6
@@ -37,14 +37,14 @@ uint32_t Sum() {
     return uint32_t(Adler32->Adler32.b) << 16 | uint32_t(Adler32->Adler32.a)&0xFFFFF;
 }
 
-uint8_t* Window() {auto Adler32 = MyFactory::CreateInstance("adler"); return Adler32->Adler32.window;}
-int Count() {auto Adler32 = MyFactory::CreateInstance("adler"); return Adler32->Adler32.count;}
-uint8_t Removed() {auto Adler32 = MyFactory::CreateInstance("adler"); return Adler32->Adler32.old;}
+uint8_t* Window() {auto Adler32 = MyFactory::CreateAdlerInstance("adler"); return Adler32->Adler32.window;}
+int Count() {auto Adler32 = MyFactory::CreateAdlerInstance("adler"); return Adler32->Adler32.count;}
+uint8_t Removed() {auto Adler32 = MyFactory::CreateAdlerInstance("adler"); return Adler32->Adler32.old;}
 
 // Add byte to rolling checksum
-adler32 Rollin(char* input)
+adler32 AdlerClass::Rollin(char* input)
 {
-    auto Adler32 = MyFactory::CreateInstance("adler");
+    auto Adler32 = MyFactory::CreateAdlerInstance("adler");
     Adler32->Adler32.a = (Adler32->Adler32.a + uint16_t(*input)) % M;
     Adler32->Adler32.b = (Adler32->Adler32.b + Adler32->Adler32.a) %M;
 
@@ -57,7 +57,7 @@ adler32 Rollin(char* input)
 // Substract byte from checksum
 adler32 RollOut()
 {
-    auto Adler32 = MyFactory::CreateInstance("adler");
+    auto Adler32 = MyFactory::CreateAdlerInstance("adler");
     // Checking if window is empty. Then nothing to roll out.
     if (sizeof(Adler32->Adler32.window == 0))
     {
