@@ -42,7 +42,7 @@ int Count() {auto Adler32 = MyFactory::CreateAdlerInstance("adler"); return Adle
 uint8_t Removed() {auto Adler32 = MyFactory::CreateAdlerInstance("adler"); return Adler32->Adler32.old;}
 
 // Add byte to rolling checksum
-adler32 AdlerClass::Rollin(char* input)
+adler32 Rollin(char* input)
 {
     auto Adler32 = MyFactory::CreateAdlerInstance("adler");
     Adler32->Adler32.a = (Adler32->Adler32.a + uint16_t(*input)) % M;

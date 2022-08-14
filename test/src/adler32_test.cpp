@@ -14,7 +14,6 @@ TEST(Adler32Test, TestWriteSum) {
 
     ASSERT_EQ(count, 17);
     EXPECT_TRUE(true);
-
 }
 
 TEST(Adler32Test, TestWindowOverFlow) {
