@@ -67,8 +67,7 @@ I am going to summarize and break down some possible improvements that could've 
       https://levelup.gitconnected.com/how-to-implement-method-chaining-in-c-3ec9f255972a
       
 ## fileio.cpp
-  * This file was fairly straight forward but had some issues with calculating the filesize in order to calculate the correct filechunks.
-      A suggested improvement would be to use std::filesystem referenced here: 
+  * This file was fairly straight forward. An alternative method for handling files would be using the std::filesystem library:
       https://en.cppreference.com/w/cpp/filesystem/file_size
       
 ## signature.cpp
@@ -87,7 +86,7 @@ I am going to summarize and break down some possible improvements that could've 
   * There is an issue providing the ifstream file to the BuildSigTable(std::ifstream& infile) function that causes a segmentation fault when running the application. I suspect this is due to a misuse of the ifstream library where it causes an error related to this:
   https://en.cppreference.com/w/cpp/io/ios_base/failure
   
-## Conclusion & Evalutation
+## Conclusion & Evaluation
   * I found this coding task interesting and challenging. It's the first time I do this kind of implementation. The implementation can certainly be   improved in order to pass more tests, referring to the issues and improvements mentioned above. I would love to discuss other possible solutions to this task and how it can be done in a better and more efficient way.
   * If I would do this task again I would start by writing each file and then write it's corresponding test file as it would allow me to understand the inputs, outputs and the flow of the program much better and faster. This would also allow me to find errors earlier and have time to correct them in order to produce a more complete and optimal solution.
   * My hunch is that this task would be more suitable to a language like Golang. Especially when handling byte streams with buffers, readers as well as lookup tables.
