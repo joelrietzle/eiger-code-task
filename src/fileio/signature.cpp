@@ -42,8 +42,7 @@ std::tuple<std::string, int> SignatureClass::WriteSignature(std::string file, st
          // Close file
         f.close();
         std::tuple<string, int> tuple(enc, 0);
-        return tuple;
-    
+        return tuple;    
 }
 
 std::tuple<Table, std::string, std::string, int> SignatureClass::ReadSignature(string file) {
@@ -81,6 +80,7 @@ std::tuple<Table, std::string, std::string, int> SignatureClass::ReadSignature(s
         std::tuple<Table, std::string, std::string, int> tuple(table, error, error,  1);
         return tuple;
     }
+    
     std::tuple<Table, std::string, std::string, int> tuple(table, dec0, dec1, 1);
     return tuple;
 }

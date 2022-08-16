@@ -11,7 +11,7 @@ std::tuple<std::ifstream&, std::string, int> FileIOClass::Open(std::string input
 {
     std::streampos begin, end;
     std::ifstream ifs;
-    std::streamoff fileSize = end-begin;
+    std::streamoff fileSize;
     std::string line;
     
     ifs.open(input, ios::in);
@@ -27,21 +27,21 @@ std::tuple<std::ifstream&, std::string, int> FileIOClass::Open(std::string input
         begin = ifs.tellg();
         ifs.seekg(0, std::ios::end);
         end = ifs.tellg();
+        fileSize = end-begin;
         ifs.close();
     }
-
 
     uint64_t fileChunks = FileIOClass::Chunks(fileSize, blockSize);
 
     if (fileChunks <= 1)
     {
         line = "At least 2 chunks are required";
-        std::tuple<std::ifstream&, std::string, int> fileChunk(ifs, line, 1);
+        std::tuple<std::ifstream&, std::string, int> fileChunk(ifs, line, 0);
         return fileChunk;
     }
 
     line = "Everything went fine";
-    std::tuple<std::ifstream&, std::string, int> fileChunk(ifs, line, 2);
+    std::tuple<std::ifstream&, std::string, int> fileChunk(ifs, line, 1);
     return fileChunk;
 }
 

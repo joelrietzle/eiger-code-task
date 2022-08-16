@@ -52,7 +52,6 @@ TEST(Adler32Test, TestRollIn) {
     RollOut().
     Sum(w0);
 
-
     ASSERT_EQ(w1, w2);
     EXPECT_TRUE(false) << "Expected the same hash for same input after the bytes had been rolled in";
 }

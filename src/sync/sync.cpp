@@ -7,7 +7,6 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-using std::ifstream;
 
 bool strongCalc = false;
 
@@ -51,14 +50,14 @@ vector<Table> SyncClass::BuildSigTable(std::ifstream& infile) {
     long size = infile.tellg();
     infile.seekg(0);
 
-    if (infile) {
+    if (infile.is_open()) {
         infile.read(block, size);
 
         if (infile)
         {
             // Weak and strong checksum
             auto Weak = weak(block);
-            auto Strong = SyncClass::Strong(block);
+            auto Strong = s->Strong(block);
 
             // Keep signatures while it's getting written
             Table table;
@@ -91,7 +90,6 @@ Indexes SyncClass::BuildIndexes(vector<Table> signatures) {
         if (key == weak)
         {
             auto strongValue = strongMap.emplace(std::make_pair(key, value));
-            
         }
     }
     return indexes;
@@ -125,7 +123,7 @@ int SyncClass::Seek(Indexes idx, uint32_t wk, char b[1024]) {
         {
             strongCalc = false;
             int keyFound = SyncClass::SearchByValue(st, subfield);
-            return keyFound; //TODO FIX ADD subFieldArr
+            return keyFound;
         }
     }
     return -1;
@@ -193,7 +191,6 @@ SyncClass::Delta SyncClass::DeltaFunc(std::vector<Table> sig, std::ifstream& rea
         if (index != 0) {
                 // Generate new block with calculated range positions for diffing 
                 auto newBlock = s->block(index, tmpLitMatches);
-                
                 delta.emplace(index, newBlock);
         }
     }

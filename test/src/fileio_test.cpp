@@ -7,10 +7,9 @@ TEST(FileIOTest, TestInvalidChunkSize)
 {
     auto IO = MyFactory::CreateFileIOInstance("fileio");
     uint64_t blockSize = 1 << 8;
-    std::string file = "/Users/joelrietz/eiger-code-task/test.txt";
-    auto openFile = FileIOClass::Open(file, blockSize);
-    
+    auto openFile = IO->Open("/Users/joelrietz/eiger-code-task/test.txt", blockSize);
     auto getError = std::get<1>(openFile);
+
     ASSERT_EQ(getError, "At least 2 chunks are required");
     EXPECT_TRUE(true) << "At least 2 chunks are required";
 }
@@ -19,7 +18,7 @@ TEST(FileIOTest, TestFileOpen)
 {
     auto IO = MyFactory::CreateFileIOInstance("fileio");
     uint64_t blockSize = 1 << 4;
-    auto openFile = FileIOClass::Open("invalid.txt", blockSize);
+    auto openFile = IO->Open("invalid.txt", blockSize);
     auto getError = std::get<1>(openFile);
 
     ASSERT_EQ(getError, "File failed to open");
@@ -30,7 +29,7 @@ TEST(FileIOTest, TestFileChunks)
 {
     auto IO = MyFactory::CreateFileIOInstance("fileio");
     uint64_t blockSize = 1 << 4;
-    auto openFile = FileIOClass::Open("/Users/joelrietz/eiger-code-task/test.txt", blockSize);
+    auto openFile = IO->Open("/Users/joelrietz/eiger-code-task/test.txt", blockSize);
     auto chunks = FileIOClass::Chunks(uint64_t(87), uint64_t(16));
 
     ASSERT_EQ(chunks, 6);

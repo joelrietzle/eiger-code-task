@@ -2,13 +2,11 @@
 #include "mybaseclass.h"
 #include "sync.h"
 #include <istream>
-#include <fstream>
-
 
 /**
 Test for matching differences
-a mock.txt
-b mockV2.txt
+a test.txt
+b test2.txt
 a= i am here guys how are you doing this is a small test for chunk split and rolling hash
 b= i here guys how are you doing this is a small test chunk split and rolling hash
 0 = i am here guys h
@@ -38,7 +36,6 @@ SyncClass::Delta CalculateDelta(std::string a, std::string b) {
     std::ifstream ifsBufferB (b, std::ifstream::in);
     
     auto sig = sync->BuildSigTable(ifsBufferA);
-
     return sync->DeltaFunc(sig, ifsBufferB);
 }
 
@@ -71,7 +68,6 @@ TEST(SyncTest, TestDetectChunkChange) {
     expect.emplace(std::make_pair(1, firstLine));
     expect.emplace(std::make_pair(4, secondLine));
 
-
     auto delta = CalculateDelta(a,b);
     CheckMath(delta, expect);
 }
@@ -82,9 +78,9 @@ TEST(SynctTest, TestDetectChunkRemoval) {
     auto delta = CalculateDelta(a,b);
 
     // Check for block 1 and block 3 removal
-    ASSERT_EQ(delta[0].Missing, false);
+    ASSERT_EQ(delta[0].Missing, true);
     EXPECT_TRUE(true) << "Expected delta first and third block missing";
-    ASSERT_EQ(delta[3].Missing, false);
+    ASSERT_EQ(delta[3].Missing, true);
     EXPECT_TRUE(true) << "Expected delta first and third block missing";
 
     // Match block missing position should be equal to expected based on block bytes size

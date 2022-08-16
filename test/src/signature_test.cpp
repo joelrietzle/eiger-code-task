@@ -29,7 +29,7 @@ TEST(SignatureTest, TestSignatureBadWrite) {
     std::string signatures[2];
     
     auto error = SignatureClass::WriteSignature("signature.bin", signatures);
-    std::cout << signatures;
+
     ASSERT_EQ(std::get<1>(error), 1);
     ASSERT_TRUE(true) << "Expected error with empty signatures to write";
 

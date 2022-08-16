@@ -16,11 +16,9 @@
 
 class MyFactory {
     public:
-        
         static std::shared_ptr<Adler32Class> CreateAdlerInstance(std::string name);
         static std::shared_ptr<FileIOClass> CreateFileIOInstance(std::string name);
         static std::shared_ptr<SyncClass> CreateSyncInstance(std::string name);        
-
 };
 
 #endif // MYBASECLASS_H
