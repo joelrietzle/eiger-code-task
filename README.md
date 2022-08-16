@@ -62,33 +62,33 @@ g++ -std=c++20 -o main_test -I/Users/joelrietz/eiger-code-task/include/ src/adle
 I am going to summarize and break down some possible improvements that could've been done:
 
 ## adler32.cpp
-  "*" Improving the Adler 32 checksum calculations through method chaining would have made calculations turn out correctly. 
+  * Improving the Adler 32 checksum calculations through method chaining would have made calculations turn out correctly. 
       For example the RollOut().RollOut().Sum() calculations should have been implemented that way. According to these instructions:
       https://levelup.gitconnected.com/how-to-implement-method-chaining-in-c-3ec9f255972a
       
 ## fileio.cpp
-  "*" This file was fairly straight forward but had some issues with calculating the filesize in order to calculate the correct filechunks.
+  * This file was fairly straight forward but had some issues with calculating the filesize in order to calculate the correct filechunks.
       A suggested improvement would be to use std::filesystem referenced here: 
       https://en.cppreference.com/w/cpp/filesystem/file_size
       
 ## signature.cpp
-  "*" Limited encoding and decoding libraries for C++. Found a base64 encoding and decoding library that I ended up using. However, I see that std::codecvt 
+  * Limited encoding and decoding libraries for C++. Found a base64 encoding and decoding library that I ended up using. However, I see that std::codecvt 
       could be a better implementation as it's a built in standardized library that converts a string from UTF-8 to UTF-32. Implemented like this:
       https://en.cppreference.com/w/cpp/locale/codecvt
       
 ## sync.cpp
-  "*" This implementation ended up utilizing a lot of maps. Another way would be to use the std::unordered_map library instead as it reduces the complexity for a look-up. However, for this implementation, the order of the elements are of importance which makes an undordered map less suitable.
+  * This implementation ended up utilizing a lot of maps. Another way would be to use the std::unordered_map library instead as it reduces the complexity for a look-up. However, for this implementation, the order of the elements are of importance which makes an undordered map less suitable.
  
  ## mybaseclass.cpp
-  "*" This implementation is made for creating objects for Adler32, Signature, and Sync using the factory function design. There are different ways to design a factory function and could possibly be improved by using this methodology: 
+  * This implementation is made for creating objects for Adler32, Signature, and Sync using the factory function design. There are different ways to design a factory function and could possibly be improved by using this methodology: 
   https://www.geeksforgeeks.org/design-patterns-set-2-factory-method/
   
 ## main.cpp
-  "*" There is an issue providing the ifstream file to the BuildSigTable(std::ifstream& infile) function that causes a segmentation fault when running the application. I suspect this is due to a misuse of the ifstream library where it causes an error related to this:
+  * There is an issue providing the ifstream file to the BuildSigTable(std::ifstream& infile) function that causes a segmentation fault when running the application. I suspect this is due to a misuse of the ifstream library where it causes an error related to this:
   https://en.cppreference.com/w/cpp/io/ios_base/failure
   
-  ## Conclusion & Evalutation
-  "*" I found this coding task interesting and challenging. It's the first time I do this kind of implementation. The implementation can certainly be   improved in order to pass more tests, referring to the issues and improvements mentioned above. I would love to discuss other possible solutions to this task and how it can be done in a better and more efficient way.
-  "*" If I would do this task again I would start by writing each file and then write it's corresponding test file as it would allow me to understand the inputs, outputs and the flow of the program much better and faster. This would also allow me to find errors earlier and have time to correct them in order to produce a more complete and optimal solution.
-  "*" My hunch is that this task would be more suitable to a language like Golang. Especially when handling byte streams with buffers, readers as well as lookup tables.
+## Conclusion & Evalutation
+  * I found this coding task interesting and challenging. It's the first time I do this kind of implementation. The implementation can certainly be   improved in order to pass more tests, referring to the issues and improvements mentioned above. I would love to discuss other possible solutions to this task and how it can be done in a better and more efficient way.
+  * If I would do this task again I would start by writing each file and then write it's corresponding test file as it would allow me to understand the inputs, outputs and the flow of the program much better and faster. This would also allow me to find errors earlier and have time to correct them in order to produce a more complete and optimal solution.
+  * My hunch is that this task would be more suitable to a language like Golang. Especially when handling byte streams with buffers, readers as well as lookup tables.
 
